@@ -1,4 +1,4 @@
-[default]
+[default.profile]
 src = 'src'
 out = 'out'
 libs = ['lib']
