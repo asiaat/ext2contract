@@ -66,8 +66,9 @@ contract Ext2Contract is ERC721Base{
         DynamicData storage mintedDynamicData = tokenData[_id];
         require(!_exists(mintedDynamicData.status), "ERC721: token already minted");
 
-        _safeMint(msg.sender, _id);
+        
         s_tokenIdToUri[_id] = tokenURI(_id);
+        mintTo(msg.sender, s_tokenIdToUri[_id]);
 
         DynamicData memory dynamicData = DynamicData({
             owner: msg.sender,
