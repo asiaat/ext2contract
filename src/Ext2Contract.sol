@@ -2,9 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "@thirdweb-dev/contracts/base/ERC721Base.sol";
+//import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@thirdweb-dev/contracts/lib/TWStrings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract Ext2Contract is ERC721Base {
+contract Ext2Contract is ERC721Base{
 
     uint256 private s_tokenCounter;
 
@@ -49,18 +51,22 @@ contract Ext2Contract is ERC721Base {
     error SvgNft__TokenUriNotFound();
 
     constructor(
-        address _defaultAdmin,
         string memory _name,
         string memory _symbol
         
-    ) ERC721Base(_defaultAdmin, _name, _symbol, msg.sender, 0) {}
+    ) ERC721Base( msg.sender, _name, _symbol
+      , msg.sender, 0
+    ) {}
 
-    function mintNft(uint256 _id) public {
+    function minting(uint256 _id) public payable{
 
-        require(_id < svgData.length, "Token ID is out of range");
+        //require(_id < svgData.length, "Token ID is out of range");
+        require(msg.value >= 420000000000000, "Minting a new token costs 0.00042 ETH");
 
+        DynamicData storage mintedDynamicData = tokenData[_id];
+        require(!_exists(mintedDynamicData.status), "ERC721: token already minted");
 
-        _safeMint(msg.sender, _id);        
+        _safeMint(msg.sender, _id);
         s_tokenIdToUri[_id] = tokenURI(_id);
 
         DynamicData memory dynamicData = DynamicData({
@@ -69,23 +75,25 @@ contract Ext2Contract is ERC721Base {
             mintingTime: block.timestamp,
             durationMs: 7000
         });
+
         tokenData[_id] = dynamicData;
+        
         emit Minted(_id, msg.sender); 
         s_tokenCounter++;
    
     }
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
+    function tokenURI(    uint256 tokenId) public view override returns (string memory) {
+        /*
         if (!_exists(tokenId)) {
             revert SvgNft__TokenUriNotFound();
         }
+        */
     
        string memory json = Base64.encode(
             bytes(string(
                 abi.encodePacked(
-                    '{"name": "SvgNFT16",',
+                    '{"name": "#',u2str(tokenId),'",',
                     '"image": "data:image/svg+xml;base64,',Base64.encode(bytes(makeSVG(tokenId))),'",',
                     '"attributes": [{"trait_type": "Speed", "value": "2" }',
                     ']}'
@@ -113,6 +121,23 @@ contract Ext2Contract is ERC721Base {
         require(_amount > 0 && _amount < 6);
         _safeMint(msg.sender, _amount);
     }
+
+    function changeDuration(uint256 _tokenId, uint256 _durationMs)  public   {
+        
+        DynamicData storage dynamicData = tokenData[_tokenId];
+        require(msg.sender == dynamicData.owner, "Only the owner can change the duration");
+
+        dynamicData.durationMs = _durationMs;
+         
+
+    }
+
+    function getTokenData(uint256 tokenId) public view returns (address, uint256, uint256, uint256) {
+        DynamicData memory dd = tokenData[tokenId];
+        return (dd.owner, dd.status, dd.mintingTime, dd.durationMs);
+    }
+
+    
 
 
     function splitHash(string memory str) public pure returns(string[10] memory) {

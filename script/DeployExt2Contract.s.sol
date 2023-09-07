@@ -28,9 +28,9 @@ contract DeployExt2Contract is Script {
         }
         vm.startBroadcast(deployerKey);
         Ext2Contract nft = new Ext2Contract(
-            msg.sender,
-            "OnChineDNFT4",
-            "ONDNFT4"
+            
+            "OnChineDNFT13",
+            "ONDNFT"
         );
         vm.stopBroadcast();
         return nft;
