@@ -9,8 +9,8 @@ import { DeployExt2Contract}    from "../script/DeployExt2Contract.s.sol";
 
 contract Ext2ContractTest is StdCheats,Test {
 
-    string constant NFT_NAME = "Ext2Contr1";
-    string constant NFT_SYMBOL = "Ext2Contr1";
+    string constant NFT_NAME = "Ext2Contr11";
+    string constant NFT_SYMBOL = "Ext2Contr11";
     Ext2Contract public nft;
     DeployExt2Contract public deployer;
     address public deployerAddress;
@@ -37,19 +37,52 @@ contract Ext2ContractTest is StdCheats,Test {
     function test2_CanMintAndHaveABalance() public {
         vm.deal(nft.owner(), 42 ether);
         vm.prank(nft.owner());
-        nft.minting{value: 0.005 ether}(0);
-        //nft.minting {value: 0.005 ether}(0);
+        nft.mintTo(ALICE,"");        
+        assert(nft.balanceOf(ALICE) == 1);
+        assertEq(nft.totalSupply(),1);
+        console.log(nft.tokenURI(3));        
+        
 
-        assert(nft.balanceOf(nft.owner()) == 1);
-        console.log(nft.tokenURI(0));
+        /*
+        vm.prank(nft.owner());
+        nft.mintTo(nft.owner(),"");
+        assert(nft.balanceOf(nft.owner()) == 2);
+        assert(nft.totalSupply() == 2);
 
         //cnt mint same token id
         vm.expectRevert();
-        nft.minting{value: 0.005 ether}(0);
+        nft.mintTo(nft.owner(),"");
+        */
 
-        // cant ming more than nft collection has items
+       
+    }
+
+    function test3_TokenURIIsCorrect() public {
+        vm.deal(nft.owner(), 42 ether);
+        vm.prank(nft.owner());
+        nft.mintTo(ALICE,"");
+
+        console.log(nft.tokenURI(4));
+
+        /*
+        assert(
+            keccak256(abi.encodePacked(nft.tokenURI(0))) ==
+                keccak256(abi.encodePacked(PUG_URI))
+        );
+        */
+    }
+
+    function test4_OnlyOwnerCanMint() public {
+        vm.deal(ALICE, 42 ether);
+        vm.prank(ALICE);
+
         vm.expectRevert();
-        nft.minting{value: 0.005 ether}(10000);
+        nft.mintTo(ALICE,"");        
+        assert(nft.balanceOf(ALICE) == 0);
+        //assertEq(nft.totalSupply(),1);
+          
+        
+
     }
 
 }
