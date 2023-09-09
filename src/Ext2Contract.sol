@@ -2,13 +2,10 @@
 pragma solidity ^0.8.0;
 
 import "@thirdweb-dev/contracts/base/ERC721Base.sol";
-//import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@thirdweb-dev/contracts/lib/TWStrings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
 contract Ext2Contract is ERC721Base{
-
-    uint256 private s_tokenCounter;
 
     mapping(uint256 => string)      private s_tokenIdToUri;
     mapping(uint256 => DynamicData) private tokenData;
@@ -21,30 +18,79 @@ contract Ext2Contract is ERC721Base{
     }
 
         string[] svgData = [
-        "<linearGradient id='gradient' x1='0%' y1='110%' x2='0%' y2='0%'><stop offset='55%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='20%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
-"<linearGradient id='gradient' x1='0%' y1='100%' x2='0%' y2='20%'><stop offset='55%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='1700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; green; black' ",
-"<linearGradient id='gradient' x1='0%' y1='100%' x2='0%' y2='0%'><stop offset='25%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='35%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; black' ",
-"<linearGradient id='gradient' x1='10%' y1='70%' x2='60%' y2='30%'><stop offset='50%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='15%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; blue; black' ",
-"<linearGradient id='gradient' x1='40%' y1='0%' x2='30%' y2='0%'><stop offset='5%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='180%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
-"<linearGradient id='gradient' x1='10%' y1='10%' x2='50%' y2='0%'><stop offset='5%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
-"<linearGradient id='gradient' x1='60%' y1='10%' x2='5%' y2='60%'><stop offset='11%' stop-color='black'><animate attributeName='stop-color' values='red; green; white; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='110%' stop-color='red'><animate attributeName='stop-color' values='black; red; gray; yellow; navy; green; black' ",
-"<linearGradient id='gradient' x1='10%' y1='70%' x2='60%' y2='30%'><stop offset='50%' stop-color='black'><animate attributeName='stop-color' values='red; blue; green; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='105%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
-"<linearGradient id='gradient' x1='47%' y1='130%' x2='16%' y2='66%'><stop offset='97%' stop-color='green'><animate attributeName='stop-color' values='red; blue; white; green; blue; gray; black' dur='9700ms' begin='5s' repeatCount='indefinite' /></stop><stop offset='20%' stop-color='black'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
-"<linearGradient id='gradient' x1='147%' y1='130%' x2='116%' y2='19%'><stop offset='97%' stop-color='white'><animate attributeName='stop-color' values='red; blue; white; green; blue; gray; black; white' dur='8700ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='2%' stop-color='black'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
-"<linearGradient id='gradient' x1='10%' y1='56%' x2='30%' y2='0%'><stop offset='55%' stop-color='white'><animate attributeName='stop-color' values='white; yellow; blue; gray; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='black'><animate attributeName='stop-color' values='black; red; green; black' ",
-"<linearGradient id='gradient' x1='10%' y1='30%' x2='60%' y2='30%'><stop offset='5%' stop-color='yellow'><animate attributeName='stop-color' values='red; green; blue; gray; black; blue; yellow' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='72%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; blue; black' ",
-"<linearGradient id='gradient' x1='0%' y1='110%' x2='0%' y2='0%'><stop offset='75%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='green'><animate attributeName='stop-color' values='white; black; red; green; black' ",
-"<linearGradient id='gradient' x1='0%' y1='110%' x2='0%' y2='0%'><stop offset='5%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='10%' stop-color='green'><animate attributeName='stop-color' values='white; black; red; green; black' ",
-"<linearGradient id='gradient' x1='0%' y1='14%' x2='10%' y2='10%'><stop offset='55%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='30%' stop-color='white'><animate attributeName='stop-color' values='white; black; red; green; black' ",
-"<linearGradient id='gradient' x1='100%' y1='19%' x2='10%' y2='10%'><stop offset='59%' stop-color='red'><animate attributeName='stop-color' values='red;  white; black' dur='5000ms' begin='7s' repeatCount='indefinite' /></stop><stop offset='3%' stop-color='white'><animate attributeName='stop-color' values='white; black; red; green; black' ",
-"<linearGradient id='gradient' x1='60%' y1='190%' x2='10%' y2='70%'><stop offset='90%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='24%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
-"<linearGradient id='gradient' x1='60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
-"<linearGradient id='gradient' x1='60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
-"<linearGradient id='gradient' x1='160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
-"<linearGradient id='gradient' x1='10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
-"<linearGradient id='gradient' x1='23%' y1='0%' x2='52%' y2='0%'><stop offset='110%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='150%' stop-color='#ba2952'><animate attributeName='stop-color' values='#7b8e9c; #baa429; #8599d4; #ba2952; ' ",
-"<linearGradient id='gradient' x1='123%' y1='150%' x2='10%' y2='120%'><stop offset='10%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='130%' stop-color='#7b8e9c'><animate attributeName='stop-color' values='yellow; #7b8e9c; #baa429; #8599d4; #ba2952; ' "
-                        ];
+            "'0%' y1='110%' x2='0%' y2='0%'><stop offset='55%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='20%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'0%' y1='100%' x2='0%' y2='20%'><stop offset='55%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='1700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; green; black' ",
+            "'0%' y1='100%' x2='0%' y2='0%'><stop offset='25%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='35%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; black' ",
+            "'10%' y1='70%' x2='60%' y2='30%'><stop offset='50%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='15%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; blue; black' ",
+            "'40%' y1='0%' x2='30%' y2='0%'><stop offset='5%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='180%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'10%' y1='10%' x2='50%' y2='0%'><stop offset='5%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'60%' y1='10%' x2='5%' y2='60%'><stop offset='11%' stop-color='black'><animate attributeName='stop-color' values='red; green; white; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='110%' stop-color='red'><animate attributeName='stop-color' values='black; red; gray; yellow; navy; green; black' ",
+            "'10%' y1='70%' x2='60%' y2='30%'><stop offset='50%' stop-color='black'><animate attributeName='stop-color' values='red; blue; green; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='105%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
+            "'47%' y1='130%' x2='16%' y2='66%'><stop offset='97%' stop-color='green'><animate attributeName='stop-color' values='red; blue; white; green; blue; gray; black' dur='9700ms' begin='5s' repeatCount='indefinite' /></stop><stop offset='20%' stop-color='black'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
+            "'147%' y1='130%' x2='116%' y2='19%'><stop offset='97%' stop-color='white'><animate attributeName='stop-color' values='red; blue; white; green; blue; gray; black; white' dur='8700ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='2%' stop-color='black'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
+            "'10%' y1='56%' x2='30%' y2='0%'><stop offset='55%' stop-color='white'><animate attributeName='stop-color' values='white; yellow; blue; gray; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='black'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'10%' y1='30%' x2='60%' y2='30%'><stop offset='5%' stop-color='yellow'><animate attributeName='stop-color' values='red; green; blue; gray; black; blue; yellow' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='72%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; blue; black' ",
+            "'0%' y1='110%' x2='0%' y2='0%'><stop offset='75%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='green'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'0%' y1='110%' x2='0%' y2='0%'><stop offset='5%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='10%' stop-color='green'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'0%' y1='14%' x2='10%' y2='10%'><stop offset='55%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='30%' stop-color='white'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'100%' y1='19%' x2='10%' y2='10%'><stop offset='59%' stop-color='red'><animate attributeName='stop-color' values='red;  white; black' dur='5000ms' begin='7s' repeatCount='indefinite' /></stop><stop offset='3%' stop-color='white'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'60%' y1='190%' x2='10%' y2='70%'><stop offset='90%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='24%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'0%' y1='100%' x2='0%' y2='20%'><stop offset='55%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='1700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; green; black' ",
+            "'0%' y1='100%' x2='0%' y2='0%'><stop offset='25%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='35%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; black' ",
+            "'10%' y1='70%' x2='60%' y2='30%'><stop offset='50%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='15%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; blue; black' ",
+            "'40%' y1='0%' x2='30%' y2='0%'><stop offset='5%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray;black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='180%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'10%' y1='10%' x2='50%' y2='0%'><stop offset='5%' stop-color='black'><animate attributeName='stop-color' values='red; green; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'60%' y1='10%' x2='5%' y2='60%'><stop offset='11%' stop-color='black'><animate attributeName='stop-color' values='red; green; white; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='110%' stop-color='red'><animate attributeName='stop-color' values='black; red; gray; yellow; navy; green; black' ",
+            "'10%' y1='70%' x2='60%' y2='30%'><stop offset='50%' stop-color='black'><animate attributeName='stop-color' values='red; blue; green; blue; gray; black' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='105%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
+            "'47%' y1='130%' x2='16%' y2='66%'><stop offset='97%' stop-color='green'><animate attributeName='stop-color' values='red; blue; white; green; blue; gray; black' dur='9700ms' begin='5s' repeatCount='indefinite' /></stop><stop offset='20%' stop-color='black'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
+            "'147%' y1='130%' x2='116%' y2='19%'><stop offset='97%' stop-color='white'><animate attributeName='stop-color' values='red; blue; white; green; blue; gray; black; white' dur='8700ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='2%' stop-color='black'><animate attributeName='stop-color' values='black; red; yellow;  green; blue; black' ",
+            "'10%' y1='56%' x2='30%' y2='0%'><stop offset='55%' stop-color='white'><animate attributeName='stop-color' values='white; yellow; blue; gray; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='black'><animate attributeName='stop-color' values='black; red; green; black' ",
+            "'10%' y1='30%' x2='60%' y2='30%'><stop offset='5%' stop-color='yellow'><animate attributeName='stop-color' values='red; green; blue; gray; black; blue; yellow' dur='3700ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='72%' stop-color='red'><animate attributeName='stop-color' values='black; red; yellow; brown; green; blue; black' ",
+            "'0%' y1='110%' x2='0%' y2='0%'><stop offset='75%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='120%' stop-color='green'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'0%' y1='110%' x2='0%' y2='0%'><stop offset='5%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='10%' stop-color='green'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'0%' y1='14%' x2='10%' y2='10%'><stop offset='55%' stop-color='red'><animate attributeName='stop-color' values='red; navy; white; green; blue; gray;black' dur='5000ms' begin='0s' repeatCount='indefinite' /></stop><stop offset='30%' stop-color='white'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'100%' y1='19%' x2='10%' y2='10%'><stop offset='59%' stop-color='red'><animate attributeName='stop-color' values='red;  white; black' dur='5000ms' begin='7s' repeatCount='indefinite' /></stop><stop offset='3%' stop-color='white'><animate attributeName='stop-color' values='white; black; red; green; black' ",
+            "'60%' y1='190%' x2='10%' y2='70%'><stop offset='90%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='24%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'23%' y1='0%' x2='52%' y2='0%'><stop offset='110%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='150%' stop-color='#ba2952'><animate attributeName='stop-color' values='#7b8e9c; #baa429; #8599d4; #ba2952; ' ",
+            "'60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'23%' y1='0%' x2='52%' y2='0%'><stop offset='110%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='150%' stop-color='#ba2952'><animate attributeName='stop-color' values='#7b8e9c; #baa429; #8599d4; #ba2952; ' ",
+            "'60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'23%' y1='0%' x2='52%' y2='0%'><stop offset='110%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='150%' stop-color='#ba2952'><animate attributeName='stop-color' values='#7b8e9c; #baa429; #8599d4; #ba2952; ' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'23%' y1='0%' x2='52%' y2='0%'><stop offset='110%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='150%' stop-color='#ba2952'><animate attributeName='stop-color' values='#7b8e9c; #baa429; #8599d4; #ba2952; ' ",
+            "'60%' y1='170%' x2='10%' y2='70%'><stop offset='80%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'60%' y1='70%' x2='10%' y2='0%'><stop offset='70%' stop-color='red'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='2s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'160%' y1='170%' x2='10%' y2='70%'><stop offset='70%' stop-color='black'><animate attributeName='stop-color' values='red;  #ff80bf;  #c61aff;  #3d0099;  #00aaff; black' dur='5000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='124%' stop-color='white'><animate attributeName='stop-color' values='white; #c61aff;  #3d0099; red;' ",
+            "'10%' y1='210%' x2='10%' y2='70%'><stop offset='75%' stop-color='#3d0099'><animate attributeName='stop-color' values='#d98079;  #ff80bf;  ##7ad62f;  #3d0099; #66ba72  #00aaff; #5faee3 black' dur='8000ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='100%' stop-color='white'><animate attributeName='stop-color' values='white; ##7ad62f;  #3d0099; #66ba72;' ",
+            "'23%' y1='0%' x2='52%' y2='0%'><stop offset='110%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='150%' stop-color='#ba2952'><animate attributeName='stop-color' values='#7b8e9c; #baa429; #8599d4; #ba2952; ' ",
+            "'123%' y1='150%' x2='10%' y2='120%'><stop offset='10%' stop-color='black'><animate attributeName='stop-color' values='#7b8e9c; #8599d4; #ba2952; #baa429; black' dur='4700ms' begin='3s' repeatCount='indefinite' /></stop><stop offset='130%' stop-color='#7b8e9c'><animate attributeName='stop-color' values='yellow; #7b8e9c; #baa429; #8599d4; #ba2952; ' "
+        ];
 
 
     event Minted(uint256 tokenId, address owner);
@@ -56,19 +102,17 @@ contract Ext2Contract is ERC721Base{
         
     ) ERC721Base( msg.sender, _name, _symbol
       , msg.sender, 0
-    ) {}
+    ) {
 
-    function minting(uint256 _id) public payable{
+    }
 
-        //require(_id < svgData.length, "Token ID is out of range");
-        require(msg.value >= 420000000000000, "Minting a new token costs 0.00042 ETH");
 
-        DynamicData storage mintedDynamicData = tokenData[_id];
-        require(!_exists(mintedDynamicData.status), "ERC721: token already minted");
+    
+    function mintTo(address _to, string memory _tokenURI) public override {
+        require(_canMint(), "Not authorized to mint.");
 
+        uint256 nextTokenId = nextTokenIdToMint();
         
-        s_tokenIdToUri[_id] = tokenURI(_id);
-        mintTo(msg.sender, s_tokenIdToUri[_id]);
 
         DynamicData memory dynamicData = DynamicData({
             owner: msg.sender,
@@ -77,25 +121,30 @@ contract Ext2Contract is ERC721Base{
             durationMs: 7000
         });
 
-        tokenData[_id] = dynamicData;
-        
-        emit Minted(_id, msg.sender); 
-        s_tokenCounter++;
-   
+
+        tokenData[nextTokenId] = dynamicData;
+        s_tokenIdToUri[nextTokenId] = tokenURI(nextTokenId);
+
+        _setTokenURI(nextTokenId, s_tokenIdToUri[nextTokenId]);
+
+        _safeMint(_to, 1, "");
     }
 
-    function tokenURI(    uint256 tokenId) public view override returns (string memory) {
+
+
+    function tokenURI(uint256 _id) public view override returns (string memory) {
         /*
         if (!_exists(tokenId)) {
             revert SvgNft__TokenUriNotFound();
         }
         */
+        
     
        string memory json = Base64.encode(
             bytes(string(
                 abi.encodePacked(
-                    '{"name": "#',u2str(tokenId),'",',
-                    '"image": "data:image/svg+xml;base64,',Base64.encode(bytes(makeSVG(tokenId))),'",',
+                    '{"name": "#',u2str(_id),'",',
+                    '"image": "data:image/svg+xml;base64,',Base64.encode(bytes(makeSVG(_id))),'",',
                     '"attributes": [{"trait_type": "Speed", "value": "2" }',
                     ']}'
                 )
@@ -113,23 +162,20 @@ contract Ext2Contract is ERC721Base{
         string memory durationMs = u2str(dynamicData.durationMs);
 
          string memory res  = string(abi.encodePacked("<svg width='350px' height='350px' xmlns='http://www.w3.org/2000/svg'>",
+                  "<linearGradient id='gradient'  x1=",
                   _svgData,
                   "dur='",durationMs,"ms' begin='0s' repeatCount='indefinite' /></stop></linearGradient><rect x='80' y='80' id='shape' width='200' height='200' fill='url(#gradient)'/></svg>"));
         return res;
     }
 
-    function claim(uint256 _amount) public {
-        require(_amount > 0 && _amount < 6);
-        _safeMint(msg.sender, _amount);
-    }
+    
 
     function changeDuration(uint256 _tokenId, uint256 _durationMs)  public   {
         
         DynamicData storage dynamicData = tokenData[_tokenId];
         require(msg.sender == dynamicData.owner, "Only the owner can change the duration");
 
-        dynamicData.durationMs = _durationMs;
-         
+        dynamicData.durationMs = _durationMs;       
 
     }
 
@@ -137,9 +183,6 @@ contract Ext2Contract is ERC721Base{
         DynamicData memory dd = tokenData[tokenId];
         return (dd.owner, dd.status, dd.mintingTime, dd.durationMs);
     }
-
-    
-
 
     function splitHash(string memory str) public pure returns(string[10] memory) {
         

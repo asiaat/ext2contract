@@ -29,8 +29,8 @@ contract DeployExt2Contract is Script {
         vm.startBroadcast(deployerKey);
         Ext2Contract nft = new Ext2Contract(
             
-            "Ext2Contr1",
-            "Ext2Contr1"
+            "Ext2Contr11",
+            "Ext2Contr11"
         );
         vm.stopBroadcast();
         return nft;
