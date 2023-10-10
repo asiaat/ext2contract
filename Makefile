@@ -32,3 +32,6 @@ deploySepolia:
 
 deployGoerli: 
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(GOERLI)
+
+deployMumbai: 
+	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(MUMBAI)

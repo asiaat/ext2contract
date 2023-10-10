@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity ^0.8.0;
 
 import {Script} from "forge-std/Script.sol";
 import { Ext2Contract } from "../src/Ext2Contract.sol";
@@ -29,8 +29,8 @@ contract DeployExt2Contract is Script {
         vm.startBroadcast(deployerKey);
         Ext2Contract nft = new Ext2Contract(
             
-            "Ext2Contr11",
-            "Ext2Contr11"
+            "Ext2Contr12",
+            "Ext2Contr12"
         );
         vm.stopBroadcast();
         return nft;

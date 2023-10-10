@@ -133,19 +133,15 @@ contract Ext2Contract is ERC721Base{
 
 
     function tokenURI(uint256 _id) public view override returns (string memory) {
-        /*
-        if (!_exists(tokenId)) {
-            revert SvgNft__TokenUriNotFound();
-        }
-        */
-        
+       DynamicData storage dynamicData = tokenData[_id];    
+       string memory durationMs = u2str(dynamicData.durationMs); 
     
        string memory json = Base64.encode(
             bytes(string(
                 abi.encodePacked(
                     '{"name": "#',u2str(_id),'",',
                     '"image": "data:image/svg+xml;base64,',Base64.encode(bytes(makeSVG(_id))),'",',
-                    '"attributes": [{"trait_type": "Speed", "value": "2" }',
+                    '"attributes": [{"trait_type": "duration_ms", "value": "',durationMs,'" }',
                     ']}'
                 )
             ))
@@ -169,8 +165,12 @@ contract Ext2Contract is ERC721Base{
     }
 
     
-
-    function changeDuration(uint256 _tokenId, uint256 _durationMs)  public   {
+    /*
+     * Dynamic function that provides an evolving dimension to the NFT.
+     * The owner can change this duration parameter to alter the
+     * shadow play of the NFT.
+     */
+    function dfChangeDuration(uint256 _tokenId, uint256 _durationMs)  public   {
         
         DynamicData storage dynamicData = tokenData[_tokenId];
         require(msg.sender == dynamicData.owner, "Only the owner can change the duration");
