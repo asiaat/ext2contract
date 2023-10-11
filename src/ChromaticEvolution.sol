@@ -5,7 +5,7 @@ import "@thirdweb-dev/contracts/base/ERC721Base.sol";
 import "@thirdweb-dev/contracts/lib/TWStrings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract ChromaticEvolution is ERC721Base{
+contract ChromaticEvolution0 is ERC721Base{
 
     mapping(uint256 => string)      private s_tokenIdToUri;
     mapping(uint256 => DynamicData) private tokenData;
@@ -103,7 +103,6 @@ contract ChromaticEvolution is ERC721Base{
     ) ERC721Base( msg.sender, _name, _symbol
       , msg.sender, 0
     ) {
-
     }
 
 

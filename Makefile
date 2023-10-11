@@ -23,6 +23,8 @@ endif
 SEPOLIA := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(SEPOLIA_PRV_KEY) --broadcast  --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 GOERLI := --rpc-url $(GOERLI_RPC_URL) --private-key $(GOERLI_PRV_KEY) --broadcast  --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 MUMBAI := --rpc-url $(MUMBAI_RPC_URL) --private-key $(MUMBAI_PRV_KEY) --broadcast  --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+POLYGON := --rpc-url $(POLYGON_RPC_URL) --private-key $(POLYGON_PRV_KEY) --broadcast  --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+
 
 deploy:
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(NETWORK_ARGS)
@@ -41,3 +43,6 @@ deployMumbai0:
 
 mumbai: 
 	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(MUMBAI)
+
+polygon: 
+	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(POLYGON) --gas-price 200000

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Script} from "forge-std/Script.sol";
-import { ChromaticEvolution } from "../src/ChromaticEvolution.sol";
+import { ChromaticEvolution0 } from "../src/ChromaticEvolution.sol";
 import {console} from "forge-std/console.sol";
 
 
@@ -13,7 +13,7 @@ contract DeployChromaticEvolution is Script {
 
 
 
-    function run() external returns ( ChromaticEvolution ) {
+    function run() external returns ( ChromaticEvolution0 ) {
 
        
 
@@ -26,14 +26,18 @@ contract DeployChromaticEvolution is Script {
         } else if (block.chainid == 80001 ){
             deployerKey = vm.envUint("MUMBAI_PRV_KEY");       
         
-        } else {
+        }  else if (block.chainid == 137 ){
+            deployerKey = vm.envUint("POLYGON_PRV_KEY");       
+        
+        }
+        else {
             deployerKey = vm.envUint("GOERLI_PRV_KEY");
         }
         vm.startBroadcast(deployerKey);
-        ChromaticEvolution nft = new ChromaticEvolution(
+        ChromaticEvolution0 nft = new ChromaticEvolution0(
             
-            "ChromaticEvolution2",
-            "CHEVO2"
+            "ChromaticEvolution",
+            "CHEVO"
         );
         vm.stopBroadcast();
         return nft;
