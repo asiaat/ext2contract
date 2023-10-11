@@ -30,8 +30,14 @@ deploy:
 deploySepolia: 
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(SEPOLIA)
 
-deployGoerli: 
+deployGoerli0: 
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(GOERLI)
 
-deployMumbai: 
+goerli: 
+	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(GOERLI)
+
+deployMumbai0: 
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(MUMBAI)
+
+mumbai: 
+	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(MUMBAI)
