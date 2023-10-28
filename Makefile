@@ -27,7 +27,7 @@ POLYGON := --rpc-url $(POLYGON_RPC_URL) --private-key $(POLYGON_PRV_KEY) --broad
 
 
 deploy:
-	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(NETWORK_ARGS)
+	@forge script script/DeployChromaticEvo.s.sol:DeployChromaticEvo  $(NETWORK_ARGS)
 
 deploySepolia: 
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(SEPOLIA)
@@ -36,13 +36,13 @@ deployGoerli0:
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(GOERLI)
 
 goerli: 
-	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(GOERLI)
+	@forge script script/DeployChromaticEvo.s.sol:DeployChromaticEvo $(GOERLI)
 
 deployMumbai0: 
 	@forge script script/DeployExt2Contract.s.sol:DeployExt2Contract $(MUMBAI)
 
 mumbai: 
-	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(MUMBAI)
+	@forge script script/DeployChromaticEvo.s.sol:DeployChromaticEvo $(MUMBAI)
 
 polygon: 
 	@forge script script/DeployChromaticEvolution.s.sol:DeployChromaticEvolution $(POLYGON) --gas-price 200000

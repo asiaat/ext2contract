@@ -2,18 +2,18 @@
 pragma solidity ^0.8.0;
 
 import {Script} from "forge-std/Script.sol";
-import { Ext2Contract } from "../src/Ext2Contract.sol";
+import { ChromaticEvo } from "../src/ChromaticEvo.sol";
 import {console} from "forge-std/console.sol";
 
 
-contract DeployExt2Contract is Script {
+contract DeployChromaticEvo is Script {
     uint256 public DEFAULT_ANVIL_PRIVATE_KEY =
         0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
     uint256 public deployerKey;
 
 
 
-    function run() external returns ( Ext2Contract ) {
+    function run() external returns ( ChromaticEvo ) {
 
        
 
@@ -23,14 +23,21 @@ contract DeployExt2Contract is Script {
         } else if (block.chainid == 11155111 ){
             deployerKey = vm.envUint("SEPOLIA_PRV_KEY");          
 
-        } else {
+        } else if (block.chainid == 80001 ){
+            deployerKey = vm.envUint("MUMBAI_PRV_KEY");       
+        
+        }  else if (block.chainid == 137 ){
+            deployerKey = vm.envUint("POLYGON_PRV_KEY");       
+        
+        }
+        else {
             deployerKey = vm.envUint("GOERLI_PRV_KEY");
         }
         vm.startBroadcast(deployerKey);
-        Ext2Contract nft = new Ext2Contract(
+        ChromaticEvo nft = new ChromaticEvo(
             
-            "Ext2Contr14",
-            "Ext2Contr14"
+            "ChromaticEvo",
+            "CHEV1"
         );
         vm.stopBroadcast();
         return nft;
